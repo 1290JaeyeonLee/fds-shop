@@ -4,17 +4,33 @@ const shopAPI = axios.create({
   baseURL : process.env.API_URL
 });
 
-
-const contEl = document.querySelector('.container');
+const memberEl = document.querySelector('.member');
+const contEl = document.querySelector('.content');
 
 const templates = {
   member: document.querySelector('#member').content,
+  login: document.querySelector('#login').content,
+  join: document.querySelector('#join').content,
   productList: document.querySelector('#product-list').content,
   productItem: document.querySelector('#product-item').content,
   productDetails: document.querySelector('#product-details').content
 }
 
+function login(token) {
+  localStorage.setItem('token', token);
+  shopAPI.defaults.headers['Authorization'] = `Bearer ${token}`;
+  memberEl.classList.add('authed');
+}
+function logout() {
+  localStorage.removeItem('token');
+  delete shopAPI.defaults.headers['Authorization'];
+  memberEl.classList.remove('authed');
+}
 
+function memberRender(fragment){
+  memberEl.textContent = '';
+  memberEl.appendChild(fragment);
+}
 function render(fragment){
   contEl.textContent = '';
   contEl.appendChild(fragment);
@@ -22,13 +38,54 @@ function render(fragment){
 
 // 인덱스 페이지
 async function indexPage() {
+  memberInfo();
   listPage();
 }
 
+// 헤더 버튼 모음
 async function memberInfo() {
   const frag = document.importNode(templates.member, true);
-  const memberEl = frag.querySelector('.member__btn');
-  // 클릭
+  frag.querySelector('.member__btn-login').addEventListener('click', e => {
+    loginPage();
+  })
+  frag.querySelector('.member__btn-logout').addEventListener('click', e => {
+    logout();
+  })
+  frag.querySelector('.member__btn-join').addEventListener('click', e => {
+    joinPage();
+  })
+  memberRender(frag);
+}
+// 로그인 페이지
+async function loginPage() {
+  const frag = document.importNode(templates.login, true);
+  const formEl = frag.querySelector('.login__form');
+  formEl.addEventListener('submit', async e => {
+    e.preventDefault();
+    const payload = {
+      username: e.target.elements.username.value,
+      password: e.target.elements.password.value
+    };
+    const res = await postAPI.post('/users/login', payload);
+    login(res.data.token);
+    indexPage();
+  })
+  render(frag);
+}
+
+// 회원가입 페이지
+async function joinPage() {
+  const frag = document.importNode(templates.join, true);
+  const formEl = frag.querySelector('.join__form');
+  formEl.addEventListener('submit', async e => {
+    e.preventDefault();
+    const payload = {
+      username: e.target.elements.username.value,
+      password: e.target.elements.password.value
+    };
+    const res = await postAPI.post('/users/register', payload);
+    indexPage();
+  })
   render(frag);
 }
 
@@ -36,8 +93,8 @@ async function memberInfo() {
 async function listPage() {
   const res = await shopAPI.get('/products');
   const listFrag = document.importNode(templates.productList, true)
-
-  res.data.forEach(product => {
+  const resReverse = res.data.reverse();
+  resReverse.forEach(product => {
     const frag = document.importNode(templates.productItem, true);
     const imgEl = frag.querySelector('.product-item__img');
     imgEl.setAttribute('src', product.img);
@@ -76,8 +133,7 @@ async function contentPage(productId){
   render(frag);
 }
 
-
-
-
-
+document.querySelector('.header__heading').addEventListener('click', e => {
+  indexPage();
+})
 indexPage();

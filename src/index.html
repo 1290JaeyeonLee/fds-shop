@@ -11,9 +11,9 @@
   <div class="wrap">
     <header class="header">
       <h1 class="header__heading">SHOE MARKET</h1>
+      <nav class="member"></nav>
     </header>
     <div class="container">
-      <nav class="member"></nav>
       <main class="content"></main>
     </div>
     <footer class="footer">footer</footer>
@@ -23,12 +23,34 @@
     <div class="member__btn">
       <button class="member__btn-login">로그인</button>
       <button class="member__btn-logout">로그아웃</button>
+      <button class="member__btn-join">회원가입</button>
       <button class="member__btn-cart">장바구니</button>
       <button class="member__btn-order">주문내역</button>
     </div> 
   </template>
-
+  <template id="login">
+    <div class="login">
+      <h2 class="login__title">로그인</h2>
+      <form class="login__form">
+        <input name="username" type="text" class="login__username">
+        <input name="password" type="password" class="login__password">
+        <button type="submit">로그인</button>
+      </form>
+    </div>
+  </template>
+  <template id="join">
+    <div class="join">
+      <h2 class="join__title">회원가입</h2>
+      <form class="join__form">
+        <input name="username" type="text" class="join__username">
+        <input name="password" type="password" class="join__password">
+        <button type="submit">회원가입</button>
+        <button type="reset">취소</button>
+      </form>
+    </div>
+  </template>
   <template id="product-list">
+    <h2>상품 목록 페이지</h2>
     <div class="product-list">      
       <!--  template : product-item -->
     </div>
@@ -41,10 +63,36 @@
   </template>
     
   <template id="product-details">
+    <h2>상품 상세 페이지</h2>
     <button class="product-details__btn-list">목록으로</button>
     <img class="product-details__img" src="#" alt="">
-    <p class="product-details__title"></p> 
-    <p class="product-details__price"></p>
+    <div class="product-details__box">
+      <h3 class="product-details__title"></h3>
+      <form class="product-details__form">
+        <dl>
+          <dt class="product-details__subtitle">판매가</dt>
+          <dd class="product-details__price"></dd>
+          <dt class="product-details__subtitle">사이즈</dt>
+          <dd class="product-details__size">
+            <select>
+              <option>선택</option>
+              <option>230</option>
+            </select>
+          </dd>
+        </dl>
+        <div class="product-details__layer">
+          <span class="product-details__layer__title"></span>
+          <span class="product-details__layer__size"></span>
+          <div class="product-details__layer__quantity">
+            <button class="product-details__quantity-minus">-</button>
+            <input type="text" name="productQuantity" value="1">
+            <button class="product-details__quantity-plus">+</button>
+          </div>
+        </div>
+        <button class="product-details__btn-buy">바로구매</button>
+        <button class="product-details__btn-cart">장바구니</button>
+      </form>
+    </div>
     <p class="product-details__content"></p>    
   </template>
   <script src="./index.js"></script>
