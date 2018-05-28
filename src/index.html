@@ -4,11 +4,49 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>중간 프로젝트 템플릿</title>
+  <title>SHOE MARKET</title>
   <link rel="stylesheet" href="./index.scss">
 </head>
 <body>
-  <h1>중간 프로젝트 템플릿</h1>
+  <div class="wrap">
+    <header class="header">
+      <h1 class="header__heading">SHOE MARKET</h1>
+    </header>
+    <div class="container">
+      <nav class="member"></nav>
+      <main class="content"></main>
+    </div>
+    <footer class="footer">footer</footer>
+  </div> <!-- //wrap -->
+
+  <template id="member">
+    <div class="member__btn">
+      <button class="member__btn-login">로그인</button>
+      <button class="member__btn-logout">로그아웃</button>
+      <button class="member__btn-cart">장바구니</button>
+      <button class="member__btn-order">주문내역</button>
+    </div> 
+  </template>
+
+  <template id="product-list">
+    <div class="product-list">      
+      <!--  template : product-item -->
+    </div>
+  </template>
+
+  <template id="product-item">
+    <img class="product-item__img" src="#" alt="">
+    <p class="product-item__title"></p> 
+    <p class="product-item__price"></p>
+  </template>
+    
+  <template id="product-details">
+    <button class="product-details__btn-list">목록으로</button>
+    <img class="product-details__img" src="#" alt="">
+    <p class="product-details__title"></p> 
+    <p class="product-details__price"></p>
+    <p class="product-details__content"></p>    
+  </template>
   <script src="./index.js"></script>
 </body>
 </html>
