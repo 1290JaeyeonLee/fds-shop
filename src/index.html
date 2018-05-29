@@ -29,7 +29,7 @@
     <div class="member__btn">
       <button class="member__btn-login">로그인</button>
       <button class="member__btn-logout">로그아웃</button>
-      <button class="member__btn-join">회원가입</button>
+      <button class="">회원가입</button>
       <button class="member__btn-cart">장바구니</button>
       <button class="member__btn-order">주문내역</button>
     </div> 
@@ -85,7 +85,7 @@
     <h2>상품 상세 페이지</h2>
     <button class="product-details__btn-list">목록으로</button>
     <img class="product-details__img" src="#" alt="">
-    <div class="product-details__box">
+    <section class="product-details__box">
       <h3 class="product-details__title"></h3>
       <form class="product-details__form">
         <dl>
@@ -93,25 +93,33 @@
           <dd class="product-details__price"></dd>
           <dt class="product-details__subtitle">사이즈</dt>
           <dd class="product-details__size">
-            <select class="product-details__size-select">
+            <select class="product-details__size-select" name="size">
               <option>사이즈 선택</option>
             </select>
           </dd>
         </dl>
-        <div class="product-details__layer">
-          <span class="product-details__layer__title"></span>
-          <span class="product-details__layer__size"></span>
-          <div class="product-details__layer__quantity">
-            <button class="product-details__quantity-minus">-</button>
-            <input type="text" name="productQuantity" value="1">
-            <button class="product-details__quantity-plus">+</button>
-          </div>
-        </div>
+        <article class="product-details__layer"></article>
+        <p class="product-details__total">총 결제 금액 <span class="product-details__total-num">0</span>원</p>
         <button class="product-details__btn-buy">바로구매</button>
         <button class="product-details__btn-cart">장바구니</button>
       </form>
-    </div>
+    </section>
     <p class="product-details__content"></p>    
+  </template>
+  <template id="product-layer">
+    <div class="product-details__layer__list">
+      <span class="product-details__layer__size"></span>
+      <div class="product-details__layer__quantity">
+        <button class="product-details__quantity-minus">-</button>
+        <input type="text" name="quantity" class="product-details__quantity-total" value="1">
+        <button class="product-details__quantity-plus">+</button>
+      </div>
+      <div class="product-details__layer__price">
+        <span class="product-details__layer__num"></span>원
+      </div>
+      <button class="product-details__layer__del">x</button>
+    </div> 
+    <!-- //product-details__layer__list -->
   </template>
   <script src="./index.js"></script>
 </body>

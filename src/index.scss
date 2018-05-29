@@ -3,3 +3,36 @@ $main-color: skyblue;
 body {
   background-color: $main-color;
 }
+
+.member{
+  .member__btn-logout,
+  .member__btn-cart,
+  .member__btn-order {
+    display: none;
+  }
+  .member__btn-login,
+  .member__btn-join {
+    display: block;
+  }
+  &.authed {
+    .member__btn-logout,
+    .member__btn-cart,
+    .member__btn-order {
+      display: block;
+    }
+    .member__btn-login,
+    .member__btn-join {
+      display: none;
+    }    
+  }
+}
+
+.product-details {
+  &__layer {
+    display: none;
+    &.layer-active {
+      display: block;
+      background-color: #ddd;
+    }
+  }
+}

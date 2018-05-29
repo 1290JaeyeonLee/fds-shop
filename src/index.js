@@ -13,7 +13,8 @@ const templates = {
   join: document.querySelector('#join').content,
   productList: document.querySelector('#product-list').content,
   productItem: document.querySelector('#product-item').content,
-  productDetails: document.querySelector('#product-details').content
+  productDetails: document.querySelector('#product-details').content,
+  productLayer: document.querySelector('#product-layer').content
 }
 
 function login(token) {
@@ -67,14 +68,13 @@ async function loginPage() {
       password: e.target.elements.password.value
     };
     const res = await shopAPI.post('/users/login', payload);
-    if(res.status === 400){
-      alert("아이디 또는 비밀번호가 올바르지 않습니다. 다시 확인하시고 입력해 주세요.");
-      res.redirect('/');
-      loginPage();
-    } else{
       login(res.data.token);
       indexPage();
-    }
+
+      // 아이디 비밀번호 불일치
+      // alert("아이디 또는 비밀번호가 올바르지 않습니다. 다시 확인하시고 입력해 주세요.");
+      // loginPage();
+    
   })
   frag.querySelector('.login__join-btn').addEventListener('click', e => {
     joinPage();
@@ -126,6 +126,7 @@ async function listPage() {
   render(listFrag);
 }
 
+// 상품 상세 페이지
 async function contentPage(productId){
   const res = await shopAPI.get(`/products/${productId}`);
   const frag = document.importNode(templates.productDetails, true);
@@ -145,7 +146,50 @@ async function contentPage(productId){
       optEl.appendChild(valEl);
       sizeEl.appendChild(optEl);
     }
-  }  
+  }
+
+  const layerFrag = document.importNode(templates.productLayer, true);
+  const layerEl = frag.querySelector('.product-details__layer');
+  const layerListEl = frag.querySelector('.product-details__layer__list');
+  const copyLayerList = layerEl.cloneNode(true);
+  const layerSizeEl = layerFrag.querySelector('.product-details__layer__size');
+  const layerDelEl = layerFrag.querySelector('.product-details__layer__del');
+  layerEl.appendChild(layerFrag);
+  
+  layerEl.classList.remove('layer-acitve');
+
+  sizeEl.addEventListener('change', e => {
+    if(e.target.value !== '사이즈 선택'){
+      layerEl.classList.add('layer-active');
+      layerSizeEl.textContent = e.target.value;
+
+      if(layerEl.classList.contains('layer-active')){
+        layerFrag.appendChild(copyLayerList);
+      } 
+      layerDelEl.addEventListener('click', e => {
+        e.preventDefault();
+        layerEl.classList.remove('layer-active');
+      })
+    }
+  })
+  
+  const quantityEl = frag.querySelector('.product-details__quantity-total');
+  let quantityVal = quantityEl.getAttribute('value');
+  frag.querySelector('.product-details__quantity-minus').addEventListener('click', e => {
+    e.preventDefault();
+    if (quantityVal <= 1) {
+      alert('수량은 1개 이상만 선택 가능합니다.');
+    } else {
+      quantityVal--;
+      quantityEl.setAttribute('value', quantityVal);
+    }
+  })
+  frag.querySelector('.product-details__quantity-plus').addEventListener('click', e => {
+    e.preventDefault();
+    quantityVal++;
+    quantityEl.setAttribute('value', quantityVal);    
+  }) 
+  
   const contentEl = frag.querySelector('.product-details__content');
   contentEl.textContent = res.data.content;    
   frag.querySelector('.product-details__btn-list').addEventListener('click', e => {

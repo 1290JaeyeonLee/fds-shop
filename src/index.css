@@ -1,0 +1,35 @@
+body {
+  background-color: skyblue;
+}
+
+.member .member__btn-logout,
+.member .member__btn-cart,
+.member .member__btn-order {
+  display: none;
+}
+
+.member .member__btn-login,
+.member .member__btn-join {
+  display: block;
+}
+
+.member.authed .member__btn-logout,
+.member.authed .member__btn-cart,
+.member.authed .member__btn-order {
+  display: block;
+}
+
+.member.authed .member__btn-login,
+.member.authed .member__btn-join {
+  display: none;
+}
+
+.product-details__layer {
+  display: none;
+}
+
+.product-details__layer.layer-active {
+  display: block;
+  background-color: #ddd;
+}
+/*# sourceMappingURL=index.css.map */
