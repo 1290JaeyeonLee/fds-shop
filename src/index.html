@@ -16,7 +16,13 @@
     <div class="container">
       <main class="content"></main>
     </div>
-    <footer class="footer">footer</footer>
+    <footer class="footer">
+      <address class="address">
+        <span>서울시 성동구 성수동 제강빌딩 8층 패스트 캠퍼스</span>
+        <span>tel. <a href="tel:0212345678">02-1234-5678</a></span>
+        <span>e-mail. <a href="mailto:1290jaeyeonlee@gmail.com?subject=문의사항">1290jaeyeonlee@gmail.com</a>       </span>            
+      </address>
+    </footer>
   </div> <!-- //wrap -->
 
   <template id="member">
@@ -29,25 +35,38 @@
     </div> 
   </template>
   <template id="login">
-    <div class="login">
-      <h2 class="login__title">로그인</h2>
+    <section class="login">
+      <h2 class="login__title">회원 로그인</h2>
       <form class="login__form">
-        <input name="username" type="text" class="login__username">
-        <input name="password" type="password" class="login__password">
-        <button type="submit">로그인</button>
+        <fieldset>
+          <legend>로그인 폼</legend>
+          <input name="username" type="text" class="login__username" placeholder="아이디" required>
+          <input name="password" type="password" class="login__password" placeholder="비밀번호" required>
+          <button type="submit">로그인</button>
+        </fieldset>
       </form>
-    </div>
+      <article class="login__join">
+      <p class="login__join__explain">회원 가입을 하셔야 쇼핑몰 이용이 가능합니다.</p>
+      <button class="login__join-btn">회원가입</button>
+      </article>
+    </section>
   </template>
   <template id="join">
-    <div class="join">
+    <section class="join">
       <h2 class="join__title">회원가입</h2>
       <form class="join__form">
-        <input name="username" type="text" class="join__username">
-        <input name="password" type="password" class="join__password">
-        <button type="submit">회원가입</button>
-        <button type="reset">취소</button>
+        <fieldset>
+          <legend>회원가입 폼</legend>
+          <input name="username" type="text" class="join__username" placeholder="아이디" required> 
+          <input name="password" type="password" class="join__password" placeholder="비밀번호" required>
+          <input name="name" type="text" class="join__name" placeholder="성명"> 
+          <input name="address" type="text" class="join__address" placeholder="주소"> 
+          <input name="phone" type="text" class="join__phone" placeholder="전화번호"> 
+          <button type="submit">회원가입</button>
+          <button type="reset">취소</button>
+        </fieldset>
       </form>
-    </div>
+    </section>
   </template>
   <template id="product-list">
     <h2>상품 목록 페이지</h2>
@@ -74,9 +93,8 @@
           <dd class="product-details__price"></dd>
           <dt class="product-details__subtitle">사이즈</dt>
           <dd class="product-details__size">
-            <select>
-              <option>선택</option>
-              <option>230</option>
+            <select class="product-details__size-select">
+              <option>사이즈 선택</option>
             </select>
           </dd>
         </dl>

@@ -66,9 +66,18 @@ async function loginPage() {
       username: e.target.elements.username.value,
       password: e.target.elements.password.value
     };
-    const res = await postAPI.post('/users/login', payload);
-    login(res.data.token);
-    indexPage();
+    const res = await shopAPI.post('/users/login', payload);
+    if(res.status === 400){
+      alert("아이디 또는 비밀번호가 올바르지 않습니다. 다시 확인하시고 입력해 주세요.");
+      res.redirect('/');
+      loginPage();
+    } else{
+      login(res.data.token);
+      indexPage();
+    }
+  })
+  frag.querySelector('.login__join-btn').addEventListener('click', e => {
+    joinPage();
   })
   render(frag);
 }
@@ -81,9 +90,12 @@ async function joinPage() {
     e.preventDefault();
     const payload = {
       username: e.target.elements.username.value,
-      password: e.target.elements.password.value
+      password: e.target.elements.password.value,
+      name: e.target.elements.name.value,
+      address: e.target.elements.address.value,
+      phone: e.target.elements.phone.value
     };
-    const res = await postAPI.post('/users/register', payload);
+    const res = await shopAPI.post('/users/register', payload);
     indexPage();
   })
   render(frag);
@@ -102,8 +114,7 @@ async function listPage() {
     const titleEl = frag.querySelector('.product-item__title');
     titleEl.textContent = product.product;
     const priceEl = frag.querySelector('.product-item__price');
-    priceEl.textContent = product.price;     
-    
+    priceEl.textContent = product.price;    
     imgEl.addEventListener('click', e => {
       contentPage(product.id)
     });
@@ -124,7 +135,17 @@ async function contentPage(productId){
   const titleEl = frag.querySelector('.product-details__title');
   titleEl.textContent = res.data.product;
   const priceEl = frag.querySelector('.product-details__price');
-  priceEl.textContent = res.data.price;  
+  priceEl.textContent = res.data.price;
+  const sizeEl = frag.querySelector('.product-details__size-select');
+  if (res.data.sizes.length > 0){
+    for(let i = 0; i < res.data.sizes.length; i++) {
+      const optEl = document.createElement('option');
+      optEl.setAttribute('value', res.data.sizes[i]);
+      const valEl = document.createTextNode(res.data.sizes[i]);
+      optEl.appendChild(valEl);
+      sizeEl.appendChild(optEl);
+    }
+  }  
   const contentEl = frag.querySelector('.product-details__content');
   contentEl.textContent = res.data.content;    
   frag.querySelector('.product-details__btn-list').addEventListener('click', e => {
