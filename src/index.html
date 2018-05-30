@@ -119,8 +119,30 @@
       </div>
       <button class="product-details__layer__del">x</button>
     </div> 
-    <!-- //product-details__layer__list -->
   </template>
+  
+  <template id="cart">
+    <h2>장바구니</h2>
+    <table class="cart__table">
+      <tr>
+        <th>상품명</th>
+        <th>사이즈</th>
+        <th>수량</th>
+        <th>가격</th>
+        <th>주문, 삭제</th>
+      </tr>
+    </table>
+  </template>
+  <template id="cart__table__row">
+    <tr>
+      <td class="cart__table__row--name"></td>
+      <td class="cart__table__row--size"></td>
+      <td class="cart__table__row--quant"></td>
+      <td class="cart__table__row--price"></td>
+      <td class="cart__table__row--btns"></td>      
+    </tr>
+  </template>
+
   <script src="./index.js"></script>
 </body>
 </html>

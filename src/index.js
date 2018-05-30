@@ -14,7 +14,9 @@ const templates = {
   productList: document.querySelector('#product-list').content,
   productItem: document.querySelector('#product-item').content,
   productDetails: document.querySelector('#product-details').content,
-  productLayer: document.querySelector('#product-layer').content
+  productLayer: document.querySelector('#product-layer').content,
+  cart: document.querySelector('#cart').content,
+  cartRow: document.querySelector('#cart__table__row').content
 }
 
 function login(token) {
@@ -154,6 +156,8 @@ async function contentPage(productId){
   const totalEl = frag.querySelector('.product-details__total-num');
   const layerEl = frag.querySelector('.product-details__layer');
   totalEl.textContent = 0;
+  let countPrice = 0;   
+  
   sizeEl.addEventListener('change', e => {
     e.preventDefault();
     // 상품 선택 시 나타나는 레이어
@@ -166,6 +170,7 @@ async function contentPage(productId){
     const quantityEl = layerFrag.querySelector('.product-details__quantity-total');
     const minusEl = layerFrag.querySelector('.product-details__quantity-minus');
     const plusEl = layerFrag.querySelector('.product-details__quantity-plus');
+ 
     let quantityVal = quantityEl.getAttribute('value');
     quantityVal = 1;
     quantityEl.setAttribute('value', quantityVal);
@@ -176,17 +181,10 @@ async function contentPage(productId){
       const productPrice = priceEl.textContent;
       let layerPrice = productPrice; 
       layerPriceEl.textContent = layerPrice; 
-
-      
-      // const layers = document.querySelectorAll('.product-details__layer__list');
-      // let countPrice = 0;
-      // for(let i = 0 ; i < layers.length ; i++) {
-      //   layers[i]
-      // //  if(layers[i].childNode.className =='product-details__layer__num') {
-      // //   countPrice += parseInt(this.textContent);
-      // //  }
-      // }
-      // totalEl.textContent = countPrice;
+      // 상품 금액 합계
+      const layerNum = layerFrag.querySelector('.product-details__layer__num').textContent;
+      countPrice += parseInt(layerNum);
+      totalEl.textContent = countPrice;
 
       // 수량 버튼
       minusEl.addEventListener('click', e => {
@@ -198,6 +196,8 @@ async function contentPage(productId){
           quantityEl.setAttribute('value', quantityVal);
           layerPrice = productPrice * quantityVal;
           layerPriceEl.textContent = layerPrice;
+          countPrice -= parseInt(productPrice);
+          totalEl.textContent = countPrice;    
         }
       })
       plusEl.addEventListener('click', e => {
@@ -205,20 +205,30 @@ async function contentPage(productId){
         quantityVal++;
         quantityEl.setAttribute('value', quantityVal);
         layerPrice = productPrice * quantityVal;
-        layerPriceEl.textContent = layerPrice;    
+        layerPriceEl.textContent = layerPrice;
+        countPrice += parseInt(productPrice);
+        totalEl.textContent = countPrice;    
       })
 
       // 삭제 버튼
       layerDelEl.addEventListener('click', e => {
         e.preventDefault();       
         e.target.parentNode.remove();
+        
+        let delPrice = 0;
+        delPrice = parseInt(e.target.previousElementSibling.firstElementChild.textContent);
+        countPrice -= delPrice;
+        totalEl.textContent = countPrice; 
+      
         if(!layerEl.hasChildNodes()) {
           layerEl.classList.remove('layer-active');
         }
+      
       })
-    , true}
-
-  layerEl.appendChild(layerFrag);
+      
+    }
+ 
+    layerEl.appendChild(layerFrag);
   
   })
   
