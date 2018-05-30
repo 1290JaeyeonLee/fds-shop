@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const shopAPI = axios.create({
-  baseURL : process.env.API_URL
+  baseURL : process.env.API_URL,
+  validateStatus: () => true,
 });
 
 const memberEl = document.querySelector('.member');
@@ -48,17 +49,23 @@ async function indexPage() {
 // 헤더 버튼 모음
 async function memberInfo() {
   const frag = document.importNode(templates.member, true);
-  if(memberEl.classList.add('authed')){
+  if(memberEl.classList.contains('authed')){
+    frag.querySelector('.member__btn-logout').addEventListener('click', e => {
+      logout();
+    })
+    frag.querySelector('.member__btn-cart').addEventListener('click', e => {
+      cartPage();
+    })
+    // frag.querySelector('.member__btn-logout').addEventListener('click', e => {
+    //   logout();
+    // })
+  } else {
     frag.querySelector('.member__btn-login').addEventListener('click', e => {
       loginPage();
     })
     
     frag.querySelector('.member__btn-join').addEventListener('click', e => {
       joinPage();
-    })
-  } else {
-    frag.querySelector('.member__btn-logout').addEventListener('click', e => {
-      logout();
     })
   }
   memberRender(frag);
@@ -74,13 +81,12 @@ async function loginPage() {
       password: e.target.elements.password.value
     };
     const res = await shopAPI.post('/users/login', payload);
+    if (res.status === 400) {
+      alert("아이디 또는 비밀번호가 올바르지 않습니다. 다시 확인하시고 입력해 주세요.");
+    } else {
       login(res.data.token);
       indexPage();
-
-      // 아이디 비밀번호 불일치
-      // alert("아이디 또는 비밀번호가 올바르지 않습니다. 다시 확인하시고 입력해 주세요.");
-      // loginPage();
-    
+    }
   })
   frag.querySelector('.login__join-btn').addEventListener('click', e => {
     joinPage();
@@ -223,23 +229,43 @@ async function contentPage(productId){
         if(!layerEl.hasChildNodes()) {
           layerEl.classList.remove('layer-active');
         }
-      
       })
-      
     }
- 
     layerEl.appendChild(layerFrag);
-  
   })
-  
   
   const contentEl = frag.querySelector('.product-details__content');
   contentEl.textContent = res.data.content;    
   frag.querySelector('.product-details__btn-list').addEventListener('click', e => {
     indexPage();
   })
+
+  // formEl.addEventListener('submit', async e => {
+  //   e.preventDefault();
+  //   const layerLists = document.querySelectorAll('.product-details__layer__list');
+  //   console.log(e.target);
+  //   for(let i = 1; i < layerLists.length ; i++){
+  //   //  console.log(e.target.elements.size.value)
+  //   }
+    // const payloads = [];
+    
+    // const payload = {
+    //   quantity: a,
+    //   size: b,
+    //   priceTotal: c
+    // };
+    // cartPage();
+  // });
   render(frag);
 }
+
+
+async function cartPage(){
+  const res = await shopAPI.get('/carts?_expand=user');
+  const frag = document.importNode(templates.cart, true);
+  render(frag);
+}
+
 
 document.querySelector('.header__heading').addEventListener('click', e => {
   indexPage();
