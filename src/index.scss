@@ -1,10 +1,59 @@
-$main-color: skyblue;
+/* common */
 
 body {
-  background-color: $main-color;
+  background-color: #fff;
+  font-family: 'Nanum Gothic', sans-serif;
+  color: #333;
+}
+
+main { 
+  padding:50px 0;
+  @media only screen and (max-width: 768px) {
+    padding: 40px 25px;
+  }
+  @media only screen and (max-width: 480px) {
+    padding: 30px 15px;
+  }
+}
+
+address {
+  font-style: normal;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* 숨김 콘텐츠 */
+legend, .a11y-hidden {
+  /* readable-hidden */
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  margin: -1px;
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+
+.header {
+  &__heading {
+    color: #fff;
+    font-size: 34px;
+    font-weight:bold;
+    font-family: 'Quantico', sans-serif;
+    cursor: pointer;
+  }
 }
 
 .member{
+  display:flex;
+  &__btn {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
   .member__btn-logout,
   .member__btn-cart,
   .member__btn-order {
@@ -23,16 +72,89 @@ body {
     .member__btn-login,
     .member__btn-join {
       display: none;
-    }    
+    }
   }
 }
 
+.login {
+  &__form {
+    width: 400px;
+    margin-top: 50px;
+    @media only screen and (max-width: 480px) {
+      width: 100%;
+      margin-top: 50px;
+    }
+    .input {
+      margin-bottom: 5px;
+    }
+  }
+  &__submit-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+  &__join {
+    margin: 50px 0;
+  }
+}
+
+.join {
+  &__form {
+    width: 400px;
+    margin-top: 50px;
+    @media only screen and (max-width: 480px) {
+      width: 100%;
+      margin-top: 50px;
+    }
+    .input {
+      margin-bottom: 5px;
+    }
+  }
+  .button {
+    margin-top: 30px;
+  }
+}
+
+
+
 .product-details {
+  &__page {
+    margin-top: 30px;
+    &:after {
+      display: block;
+      clear: both;
+      content:'';
+    }
+  }
+
+  &__img {
+    float: left;
+    width: 380px;
+    height: 380px;
+    margin: 0 50px 100px 0;
+  }
   &__layer {
     display: none;
+    &__list {
+      padding: 10px;
+      border-top: 2px dotted #fff;
+      &:first-child {
+        border-top: 0;
+      }
+    }
     &.layer-active {
       display: block;
       background-color: #ddd;
     }
   }
+  &__content {
+    clear: both;
+    margin-top: 50px;
+  }
+  &__btn-list {
+    margin-bottom: 20px;
+  }
+}
+
+footer.footer {
+  padding: 3rem 1.5rem;
 }
