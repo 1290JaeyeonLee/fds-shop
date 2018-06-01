@@ -18,7 +18,13 @@ const templates = {
   productLayer: document.querySelector('#product-layer').content,
   cart: document.querySelector('#cart').content,
   cartItem: document.querySelector('#cart-item').content,
-  cartNoItem: document.querySelector('#cart-noitem').content
+  cartNoItem: document.querySelector('#cart-noitem').content,
+  order: document.querySelector('#order').content,
+  orderList: document.querySelector('#order-list').content,
+  orderShip: document.querySelector('#order-ship').content,
+  orderHistory: document.querySelector('#order-history').content,
+  orderHisList: document.querySelector('#order-history__list').content,
+  orderHisNoList: document.querySelector('#order-history__nolist').content      
 }
 
 function login(token) {
@@ -58,9 +64,6 @@ async function memberInfo() {
     frag.querySelector('.member__btn-cart').addEventListener('click', e => {
       cartPage();
     })
-    // frag.querySelector('.member__btn-logout').addEventListener('click', e => {
-    //   logout();
-    // })
   } else {
     frag.querySelector('.member__btn-login').addEventListener('click', e => {
       loginPage();
@@ -190,8 +193,6 @@ async function contentPage(productId){
       let quantityValue = quantityEl.getAttribute('value');
       quantityEl.setAttribute('value', 1);
 
-
-
       layerEl.classList.add('layer-active');
       const productPrice = parseInt(priceEl.textContent); 
       const item = {
@@ -208,7 +209,6 @@ async function contentPage(productId){
       const layerNum = layerFrag.querySelector('.product-details__layer__num').textContent;
       countPrice += parseInt(layerNum);
       totalEl.textContent = countPrice;
-      
 
       // 수량 버튼
       minusEl.addEventListener('click', e => {
@@ -297,13 +297,140 @@ async function contentPage(productId){
   render(frag);
 }
 
-
 async function cartPage(){
   const res = await shopAPI.get('/carts?_expand=product');
   const frag = document.importNode(templates.cart, true);
-  console.log(res.data);
+  const orderBtnEl = frag.querySelector('.cart__total__order');
+  let countPrice = 0;
+  if(res.data.length === 0){
+    const cartFrag = document.importNode(templates.cartNoItem, true);
+    frag.querySelector('.cart__list').appendChild(cartFrag);
+  } else {
+    res.data.forEach((cart, index, carts) => {
+      const cartFrag = document.importNode(templates.cartItem, true);
+      const imgEl = cartFrag.querySelector('.cart__item__img');
+      imgEl.setAttribute('src', cart.product.img);
+      const titleEl = cartFrag.querySelector('.cart__item__title');
+      titleEl.textContent = cart.product.product;
+      const sizeEl = cartFrag.querySelector('.cart__item__size');
+      sizeEl.textContent = cart.size;
+      const quantityEl = cartFrag.querySelector('.cart__item__quantity-total');
+      const minusEl = cartFrag.querySelector('.cart__item__quantity-minus');
+      const plusEl = cartFrag.querySelector('.cart__item__quantity-plus');
+      quantityEl.setAttribute('value', cart.quantity);
+      const delEl = cartFrag.querySelector('.cart__item__btn-delete');
+      const priceEl = cartFrag.querySelector('.cart__item__price');
+      priceEl.textContent = cart.price;
+      let productPrice = parseInt(cart.product.price); 
+      let itemPrice = productPrice;
+      countPrice += parseInt(cart.price);
+      let quantityValue = quantityEl.getAttribute('value');
+      const totalPriceEl = frag.querySelector('.cart__total__price-num');
+      
+      // 수량 버튼
+      minusEl.addEventListener('click', async e => {
+        e.preventDefault();  
+        if (quantityValue <= 1) {
+          alert('수량은 1개 이상만 선택 가능합니다.');
+        } else {
+          quantityValue--;
+          quantityEl.setAttribute('value', quantityValue);
+          countPrice -= parseInt(productPrice);
+          totalPriceEl.textContent = countPrice;
+
+          itemPrice = productPrice * quantityValue;
+          priceEl.textContent = itemPrice;
+          cart.quantity--;
+          cart.price = itemPrice;
+          const payload = {
+            quantity: cart.quantity,
+            price: cart.price
+          };
+          const resCart = await shopAPI.patch(`/carts/${cart.id}`, payload);  
+        }
+      })
+      plusEl.addEventListener('click', async e => {
+        e.preventDefault();
+        quantityValue++;
+        quantityEl.setAttribute('value', quantityValue);
+        countPrice += parseInt(productPrice);
+        totalPriceEl.textContent = countPrice;
+
+        itemPrice = productPrice * quantityValue;
+        priceEl.textContent = itemPrice;
+        cart.quantity++;
+        cart.price = itemPrice;
+        const payload = {
+          quantity: cart.quantity,
+          price: cart.price
+        };
+        const resCart = await shopAPI.patch(`/carts/${cart.id}`, payload);          
+      })
+ 
+      // 삭제 버튼
+      delEl.addEventListener('click', async e => {
+        e.preventDefault();
+        e.target.parentNode.parentNode.remove();
+        carts.splice(index, 1);
+        const cartRes = await shopAPI.delete(`/carts/${cart.id}`);      
+        let delPrice = 0;
+        delPrice = cart.price;
+        countPrice -= delPrice;
+        totalPriceEl.textContent = countPrice;      
+      })
+      totalPriceEl.textContent = countPrice;
+      frag.querySelector('.cart__list').appendChild(cartFrag);
+    })
+  }
+  orderBtnEl.addEventListener('click', async e => {
+    e.preventDefault();
+    console.log(res.data)
+    
+    const payload = {
+      cartId : 0
+      //productId: 0
+    } 
+    //const orderRes2 = await shopAPI.delete(`/orders`);  
+    for(let i = 0; i < res.data.length; i++){
+      payload.cartId = res.data[i].id;
+      //payload.productId = cart.productId;
+      const orderRes = await shopAPI.post('/orders', payload);
+      //const orderRes = await shopAPI.post(`/cart/${cartId}/orderss`, payload);
+      ///products/${productId}/carts
+      console.log(orderRes.data)
+    }
+    orderPage();
+  })
   render(frag);
 }
+
+async function orderPage(){
+  
+  const res = await shopAPI.get('/orders?_expand=cart');
+  
+  const frag = document.importNode(templates.order, true);
+  const orderListEl = frag.querySelector('.order__list');
+  let countPrice = 0;
+  res.data.forEach(async order => {
+    const orderFrag = document.importNode(templates.orderList, true);
+    const cartRes = await shopAPI.get('/carts?_expand=product');
+    cartRes.data.forEach(cart => {
+      const imgEl = orderFrag.querySelector('.order__item__img');
+      imgEl.setAttribute('src', cart.product.img);
+      const titleEl = orderFrag.querySelector('.order__item__title');
+      titleEl.textContent = cart.product.product;
+      const sizeEl = orderFrag.querySelector('.order__item__size');
+      sizeEl.textContent = cart.size;
+      const priceEl = orderFrag.querySelector('.order__item__price');
+      priceEl.textContent = cart.price;
+      
+      orderListEl.appendChild(orderFrag);
+    })
+  })
+  render(frag);
+}
+
+
 
 
 document.querySelector('.header__heading').addEventListener('click', e => {

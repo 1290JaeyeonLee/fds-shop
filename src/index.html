@@ -96,24 +96,26 @@
     <h2 class="a11y-hidden">상품 상세 페이지</h2>
     <button class="product-details__btn-list button is-info">목록으로</button>
     <div class="product-details__page">
-      <img class="product-details__img" src="#" alt="">
-      <section class="product-details__box field">
-        <h3 class="product-details__title"></h3>
-        <dl class="product-details__list">
-          <dt class="product-details__subtitle">판매가</dt>
-          <dd class="product-details__price"></dd>
-          <dt class="product-details__subtitle">사이즈</dt>
-          <dd class="product-details__size select">
-            <select class="product-details__size-select">
-              <option>사이즈 선택</option>
-            </select>
-          </dd>
-        </dl>
-        <article class="product-details__layer"></article>
-        <p class="product-details__total">총 결제 금액 <span class="product-details__total-num">0</span>원</p>
-        <button class="product-details__btn-buy button is-danger is-outlined">바로구매</button>
-        <button class="product-details__btn-cart button is-info is-outlined">장바구니</button>
-      </section>
+      <div class="product-details__info">      
+        <img class="product-details__img" src="#" alt="">
+        <section class="product-details__box field">
+          <h3 class="product-details__title"></h3>
+          <dl class="product-details__list">
+            <dt class="product-details__subtitle">판매가</dt>
+            <dd class="product-details__price"></dd>
+            <dt class="product-details__subtitle">사이즈</dt>
+            <dd class="product-details__size select">
+              <select class="product-details__size-select">
+                <option>사이즈 선택</option>
+              </select>
+            </dd>
+          </dl>
+          <article class="product-details__layer"></article>
+          <p class="product-details__total">총 결제 금액 <span class="product-details__total-num">0</span>원</p>
+          <button class="product-details__btn-buy button is-danger is-outlined">바로구매</button>
+          <button class="product-details__btn-cart button is-info is-outlined">장바구니</button>
+        </section>
+      </div>
       <p class="product-details__content"></p>
     </div>    
   </template>
@@ -139,35 +141,33 @@
     <section class="cart__total">
       <h3>장바구니 합계</h3>
       <div class="cart__total__price">
-        총 주문 금액 : <span class="cart__total__price-num"></span> 원
+        총 주문 금액 : <span class="cart__total__price-num">0</span> 원
+        <button class="cart__total__order button is-danger ">전체상품 주문하기</button>
       </div>
-      <button class="cart__total__order button is-info">전체상품 주문하기</button>
     </section>
   </template>  
   <template id="cart-item">
-    <h3>장바구니 리스트</h3>
     <article class="cart__item">
       <img src="#" alt="" class="cart__item__img">
-      <div class="cart__item__info">
+      <div class="cart__item__main-info">
         <p>
-          상품명:<span class="cart__item__title"></span>
+          상품명 : <span class="cart__item__title"></span>
         </p>
         <p>
-          사이즈:<span class="cart__item__size"></span>
+          사이즈 : <span class="cart__item__size"></span>
         </p>
       </div>
       <div class="cart__item__info">
-        수량:
         <button class="cart__item__quantity-minus">-</button>
         <input type="text" name="quantity" class="cart__item__quantity-total" value="1">
         <button class="cart__item__quantity-plus">+</button>
       </div>
       <div class="cart__item__info">
-        상품 금액 :<span class="cart__item__price"></span> 원
+        주문 금액 : <span class="cart__item__price">0</span> 원
       </div>
       <div class="cart__item__btn">
-        <button class="cart__item__btn-delete">삭제</button>
-        <button class="cart__item__btn-order">주문</button>      
+        <button class="cart__item__btn-order button is-danger is-outlined">바로 주문</button>      
+        <button class="cart__item__btn-delete button">삭제</button>
       </div>
     </article>
   </template>
@@ -181,21 +181,22 @@
   
   <template id="order">
   <h2>주문결제</h2>
+  <h3>주문 상품 리스트</h3>
   <section class="order__list"></section>
+  <h3>배송지</h3>
   <section class="order__ship"></section>
   <section class="order__pay">
     <h3>결제하기</h3>
     <div class="order__pay__price">
-      결제 금액 : <span class="order__pay__price-num"></span> 원
+      결제 금액 : <span class="order__pay__price-num">0</span> 원
     </div>
-    <button class="order__pay__btn">결제하기</button>
+    <button class="order__pay__btn button is-danger">결제하기</button>
   </section>
   </template>
   <template id="order-list">
-    <h3>주문리스트</h3>
     <article class="order__item">
         <img src="#" alt="" class="order__item__img">
-        <div class="order__item__info">
+        <div class="order__item__main-info">
           <p>
             상품명:<span class="order__item__title"></span>
           </p>
@@ -204,13 +205,12 @@
           </p>
         </div>
         <div class="order__item__info">
-          상품 금액 :<span class="order__item__price"></span> 원
+          상품 금액 : <span class="order__item__price"></span> 원
         </div>
       </article>
   </template>
 
   <template id="order-ship">
-    <h3>배송지</h3>
     <article class="order__ship">
       <input name="name" type="text" class="order__name" placeholder="성명"> 
       <input name="address" type="text" class="order__address" placeholder="주소"> 
@@ -236,6 +236,11 @@
         총 구매금액:<span class="order-history__item__price"></span>
       </div>
     </article>
+  </template>
+  <template id="order-history__nolist">
+    <p class="order-history__nolist__explain">
+      주문한 내역이 없습니다.
+      </p>
   </template>
   <script src="./index.js"></script>
 </body>
