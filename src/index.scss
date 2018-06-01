@@ -7,7 +7,8 @@ body {
 }
 
 main { 
-  padding:50px 0;
+  position: relative;
+  padding: 50px 0;
   @media only screen and (max-width: 768px) {
     padding: 40px 25px;
   }
@@ -36,6 +37,28 @@ legend, .a11y-hidden {
   position: absolute;
   clip: rect(0, 0, 0, 0);
 }
+
+
+.cont {
+  &--loading {
+    &::after {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 5em;
+      content: 'Loading...';
+      font-size: 2em;
+      background-color: rgba(255,255,255,.8);
+      color: #209cee;
+      z-index: 9999;
+      font-family: 'Quantico', sans-serif;
+    }
+  }
+}
+
 
 .header {
   &__heading {
@@ -189,6 +212,11 @@ legend, .a11y-hidden {
       background-color: #eee;
     }
   }
+  &__quantity-total {
+    width: 40px;
+    text-align: right;
+    padding-right: 10px;
+  }
   &__content {
     clear: both;
     margin-top: 50px;
@@ -311,8 +339,6 @@ legend, .a11y-hidden {
   }
 
   &__pay{
-    display: flex;
-    justify-content: space-between;
     h3 {
       font-size: 1.2em;
     }  
@@ -323,6 +349,22 @@ legend, .a11y-hidden {
     &__btn {
         margin-left: 20px;
     }
+  }
+
+  &__ship__box {
+    margin: 30px 0;
+    padding: 10px;
+    background-color: #f2f2f2;
+    .input {
+      margin: 2px 0;
+    }
+  }
+  &__pay__total__box {
+    display: flex;
+    justify-content: flex-end;
+  }
+  &__pay__price {
+    font-size: 1.3em;
   }
 }
 

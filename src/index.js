@@ -5,8 +5,18 @@ const shopAPI = axios.create({
   validateStatus: () => true,
 });
 
+
 const memberEl = document.querySelector('.member');
 const contEl = document.querySelector('.content');
+
+shopAPI.interceptors.request.use(function (config) {
+  contEl.classList.add('cont--loading');
+  return config;
+});
+shopAPI.interceptors.response.use(function (response) {
+  contEl.classList.remove('cont--loading');
+  return response;
+})
 
 const templates = {
   member: document.querySelector('#member').content,
@@ -384,49 +394,75 @@ async function cartPage(){
   }
   orderBtnEl.addEventListener('click', async e => {
     e.preventDefault();
-    console.log(res.data)
     
     const payload = {
       cartId : 0
-      //productId: 0
     } 
     //const orderRes2 = await shopAPI.delete(`/orders`);  
     for(let i = 0; i < res.data.length; i++){
       payload.cartId = res.data[i].id;
       //payload.productId = cart.productId;
       const orderRes = await shopAPI.post('/orders', payload);
-      //const orderRes = await shopAPI.post(`/cart/${cartId}/orderss`, payload);
+      //const orderRes = await shopAPI.post(`/cart/${cartId}/orders`, payload);
       ///products/${productId}/carts
-      console.log(orderRes.data)
     }
-    orderPage();
+    orderPage(res.data.map(cart => cart.id));
   })
   render(frag);
 }
 
-async function orderPage(){
-  
-  const res = await shopAPI.get('/orders?_expand=cart');
-  
+async function orderPage(cartIds){
+  const carts = [];
+  for (const cartId of cartIds) {
+    const res = await shopAPI.get(`/carts/${cartId}`);
+    carts.push(res.data);
+  }
   const frag = document.importNode(templates.order, true);
   const orderListEl = frag.querySelector('.order__list');
+  const orderShipEl = frag.querySelector('.order__ship');
+  const totalPay = frag.querySelector('.order__pay__price-num');
+
   let countPrice = 0;
-  res.data.forEach(async order => {
-    const orderFrag = document.importNode(templates.orderList, true);
-    const cartRes = await shopAPI.get('/carts?_expand=product');
-    cartRes.data.forEach(cart => {
+  // carts.forEach(async order => {
+    const productRes = await shopAPI.get(`/carts?_expand=product`);
+    productRes.data.forEach(item => {
+      console.log(item)
+
+      const orderFrag = document.importNode(templates.orderList, true);
       const imgEl = orderFrag.querySelector('.order__item__img');
-      imgEl.setAttribute('src', cart.product.img);
+      imgEl.setAttribute('src', item.product.img);
       const titleEl = orderFrag.querySelector('.order__item__title');
-      titleEl.textContent = cart.product.product;
+      titleEl.textContent = item.product.product;
       const sizeEl = orderFrag.querySelector('.order__item__size');
-      sizeEl.textContent = cart.size;
+      sizeEl.textContent = item.size;
+      const quantityEl = orderFrag.querySelector('.order__item__quantity');
+      quantityEl.textContent = item.quantity;
       const priceEl = orderFrag.querySelector('.order__item__price');
-      priceEl.textContent = cart.price;
-      
+      priceEl.textContent = item.price;
+      countPrice += item.price;
       orderListEl.appendChild(orderFrag);
     })
+    totalPay.textContent = countPrice;
+    
+  // })
+  const userRes = await shopAPI.get(`/carts?_expand=user`);
+  const shipFrag = document.importNode(templates.orderShip, true);
+  userRes.data.forEach(user => {
+    console.log(user)
+    const orderShipBox = shipFrag.querySelector('.order__ship__box');
+
+    const orderShipName = shipFrag.querySelector('.order__ship__name');
+    orderShipName.setAttribute('value', user.user.name);
+
+    const orderShipAddress = shipFrag.querySelector('.order__ship__address');
+    orderShipAddress.setAttribute('value', user.user.address);
+
+    const orderShipPhone = shipFrag.querySelector('.order__ship__phone');
+    orderShipPhone.setAttribute('value', user.user.phone);
+    
   })
+  orderShipEl.appendChild(shipFrag);
+
   render(frag);
 }
 

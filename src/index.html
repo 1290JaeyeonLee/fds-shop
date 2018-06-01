@@ -187,10 +187,12 @@
   <section class="order__ship"></section>
   <section class="order__pay">
     <h3>결제하기</h3>
-    <div class="order__pay__price">
-      결제 금액 : <span class="order__pay__price-num">0</span> 원
+    <div class="order__pay__total__box">
+      <div class="order__pay__price">
+        결제 금액 : <span class="order__pay__price-num">0</span> 원
+      </div>
+      <button class="order__pay__btn button is-danger">결제하기</button>
     </div>
-    <button class="order__pay__btn button is-danger">결제하기</button>
   </section>
   </template>
   <template id="order-list">
@@ -198,10 +200,13 @@
         <img src="#" alt="" class="order__item__img">
         <div class="order__item__main-info">
           <p>
-            상품명:<span class="order__item__title"></span>
+            상품명 : <span class="order__item__title"></span>
           </p>
           <p>
-            사이즈:<span class="order__item__size"></span>
+            사이즈 : <span class="order__item__size"></span>
+          </p>
+          <p>
+            수량 : <span class="order__item__quantity"></span>
           </p>
         </div>
         <div class="order__item__info">
@@ -211,10 +216,10 @@
   </template>
 
   <template id="order-ship">
-    <article class="order__ship">
-      <input name="name" type="text" class="order__name" placeholder="성명"> 
-      <input name="address" type="text" class="order__address" placeholder="주소"> 
-      <input name="phone" type="text" class="order__phone" placeholder="전화번호"> 
+    <article class="order__ship__box">
+      <input name="name" type="text" class="order__ship__name input" placeholder="성명"> 
+      <input name="address" type="text" class="order__ship__address input" placeholder="주소"> 
+      <input name="phone" type="text" class="order__ship__phone input" placeholder="전화번호"> 
     </article>
   </template>
 
