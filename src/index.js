@@ -373,6 +373,7 @@ async function cartPage(){
       const plusEl = cartFrag.querySelector('.cart__item__quantity-plus');
       quantityEl.setAttribute('value', cart.quantity);
       const delEl = cartFrag.querySelector('.cart__item__btn-delete');
+      const payEl = cartFrag.querySelector('.cart__item__btn-order');
       const priceEl = cartFrag.querySelector('.cart__item__price');
       priceEl.textContent = cart.price;
       let productPrice = parseInt(cart.product.price); 
@@ -380,7 +381,6 @@ async function cartPage(){
       countPrice += parseInt(cart.price);
       let quantityValue = quantityEl.getAttribute('value');
       const totalPriceEl = frag.querySelector('.cart__total__price-num');
-      const payEl = frag.querySelector('.cart__item__btn-order');
       
       // 수량 버튼
       minusEl.addEventListener('click', async e => {
@@ -433,11 +433,11 @@ async function cartPage(){
         countPrice -= delPrice;
         totalPriceEl.textContent = countPrice;      
       })
+      payEl.addEventListener('click', async e => {
+        e.preventDefault();
+      })
       totalPriceEl.textContent = countPrice;
       frag.querySelector('.cart__list').appendChild(cartFrag);
-    })
-    payEl.addEventListener('click', async e => {
-      e.preventDefault();
     })
   }
   orderBtnEl.addEventListener('click', async e => {
@@ -511,11 +511,10 @@ async function orderPage(cartIds){
         price : cart.price,
         productId : cart.productId
       }
-      console.log(payload)
       payload.orderItems.push(orderItem);
     });
-    console.log(payload)
     const orderRes = await shopAPI.post('/orders', payload);
+    //const cartDel = await shopAPI.delete('/carts');
     historyPage();
   })
   render(frag);
@@ -523,10 +522,7 @@ async function orderPage(cartIds){
 
 // 주문내역 페이지
 async function historyPage(){
-  //const cartDel = await shopAPI.delete('/carts');
   const res = await shopAPI.get('/orders');
-
-  console.log(res.data)
   const frag = document.importNode(templates.orderHistory, true);
   const historyListEl = frag.querySelector('.order-history__list');
   if(res.data.length === 0){
