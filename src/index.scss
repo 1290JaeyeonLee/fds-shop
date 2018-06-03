@@ -5,18 +5,6 @@ body {
   font-family: 'Nanum Gothic', sans-serif;
   color: #333;
 }
-
-main { 
-  position: relative;
-  padding: 50px 0;
-  @media only screen and (max-width: 768px) {
-    padding: 40px 25px;
-  }
-  @media only screen and (max-width: 480px) {
-    padding: 30px 15px;
-  }
-}
-
 button { cursor: pointer;}
 
 address {
@@ -29,9 +17,7 @@ fieldset {
   padding: 0;
 }
 
-/* 숨김 콘텐츠 */
 legend, .a11y-hidden {
-  /* readable-hidden */
   width: 1px;
   height: 1px;
   overflow: hidden;
@@ -39,7 +25,6 @@ legend, .a11y-hidden {
   position: absolute;
   clip: rect(0, 0, 0, 0);
 }
-
 
 .cont {
   &--loading {
@@ -60,6 +45,8 @@ legend, .a11y-hidden {
     }
   }
 }
+
+/* header */
 
 .header {
   &__heading {
@@ -98,6 +85,19 @@ legend, .a11y-hidden {
     .member__btn-join {
       display: none;
     }
+  }
+}
+
+/* container */
+
+main { 
+  position: relative;
+  padding: 50px 0;
+  @media only screen and (max-width: 768px) {
+    padding: 40px 25px;
+  }
+  @media only screen and (max-width: 480px) {
+    padding: 30px 15px;
   }
 }
 
@@ -188,7 +188,6 @@ legend, .a11y-hidden {
     margin-bottom: 10px;
   }
 }
-
 
 .product-details {
   &__btn-golist {
@@ -451,10 +450,7 @@ legend, .a11y-hidden {
   }
 }
 
-
-
-
-
+/* footer */
 footer.footer {
   padding: 3rem 1.5rem;
 }

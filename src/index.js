@@ -293,6 +293,9 @@ async function contentPage(productId){
 
   frag.querySelector('.product-details__btn-cart').addEventListener('click', async e => {
     e.preventDefault();
+    if(!layerEl.hasChildNodes()) {
+      alert('옵션을 선택해주세요.')
+    }
     if(memberEl.classList.contains('authed')){
       const payload = {
         size : 0,
@@ -316,6 +319,9 @@ async function contentPage(productId){
 
   frag.querySelector('.product-details__btn-buy').addEventListener('click', async e => {
     e.preventDefault();
+    if(!layerEl.hasChildNodes()) {
+      alert('옵션을 선택해주세요.')
+    }
     if(memberEl.classList.contains('authed')){
       const payload = {
         size : 0,
@@ -338,11 +344,13 @@ async function contentPage(productId){
 
   render(frag);
 }
+// 바로구매
 async function noCart(){
   const res = await shopAPI.get('/carts?_expand=product');  
   orderPage(res.data.map(cart => cart.id));
 }
 
+// 장바구니 페이지
 async function cartPage(){
   const res = await shopAPI.get('/carts?_expand=product');
   const frag = document.importNode(templates.cart, true);
@@ -372,6 +380,7 @@ async function cartPage(){
       countPrice += parseInt(cart.price);
       let quantityValue = quantityEl.getAttribute('value');
       const totalPriceEl = frag.querySelector('.cart__total__price-num');
+      const payEl = frag.querySelector('.cart__item__btn-order');
       
       // 수량 버튼
       minusEl.addEventListener('click', async e => {
@@ -427,6 +436,9 @@ async function cartPage(){
       totalPriceEl.textContent = countPrice;
       frag.querySelector('.cart__list').appendChild(cartFrag);
     })
+    payEl.addEventListener('click', async e => {
+      e.preventDefault();
+    })
   }
   orderBtnEl.addEventListener('click', async e => {
     e.preventDefault();
@@ -435,6 +447,7 @@ async function cartPage(){
   render(frag);
 }
 
+// 주문 결제 페이지
 async function orderPage(cartIds){
   const carts = [];
 
@@ -508,6 +521,7 @@ async function orderPage(cartIds){
   render(frag);
 }
 
+// 주문내역 페이지
 async function historyPage(){
   //const cartDel = await shopAPI.delete('/carts');
   const res = await shopAPI.get('/orders');
@@ -528,28 +542,11 @@ async function historyPage(){
       const priceEl = orderFrag.querySelector('.order-history__total');
       priceEl.textContent = order.payTotal;
       const itemListEl = orderFrag.querySelector('.order-history__products');
-      
-
-      // order.orderItems.forEach(item => {
-      //   const itemFrag = document.importNode(templates.orderProduct, true);
-      //   const productEl = itemFrag.querySelector('.order-history__name');
-      //   productEl.textContent = product;
-      //   const sizeEl = itemFrag.querySelector('.order-history__size');
-      //   sizeEl.textContent = size;
-      //   const quantityEl = itemFrag.querySelector('.order-history__quantity');
-      //   quantityEl.textContent = quantity;
-      //   const priceEl = itemFrag.querySelector('.order-history__price');
-      //   priceEl.textContent = price;
-      //   itemListEl.appendChild(itemFrag);
-      // }) 
-  
       historyListEl.appendChild(orderFrag);
-
     });
   }
   render(frag);
 }
-
 
 document.querySelector('.header__heading').addEventListener('click', e => {
   indexPage();
