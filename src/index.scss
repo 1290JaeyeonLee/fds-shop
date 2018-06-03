@@ -17,6 +17,8 @@ main {
   }
 }
 
+button { cursor: pointer;}
+
 address {
   font-style: normal;
 }
@@ -50,7 +52,7 @@ legend, .a11y-hidden {
       bottom: 0;
       padding: 5em;
       content: 'Loading...';
-      font-size: 2em;
+      font-size: 1.6em;
       background-color: rgba(255,255,255,.8);
       color: #209cee;
       z-index: 9999;
@@ -59,9 +61,9 @@ legend, .a11y-hidden {
   }
 }
 
-
 .header {
   &__heading {
+    margin-right: 20px;
     color: #fff;
     font-size: 34px;
     font-weight:bold;
@@ -116,7 +118,12 @@ legend, .a11y-hidden {
     margin-top: 10px;
   }
   &__join {
+    width: 400px;
     margin: 50px 0;
+    text-align: right;
+    &__explain {
+      text-align: left;
+    }
   }
 }
 
@@ -124,6 +131,7 @@ legend, .a11y-hidden {
   &__form {
     width: 400px;
     margin-top: 50px;
+    text-align: right;
     @media only screen and (max-width: 480px) {
       width: 100%;
       margin-top: 50px;
@@ -146,11 +154,11 @@ legend, .a11y-hidden {
 }
 .product-item {
   width: 25%;
-  padding: 20px;
+  padding: 40px;
   float: left;
   text-align: center;
   &__img {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     cursor: pointer;
   }
   &__title {
@@ -163,12 +171,32 @@ legend, .a11y-hidden {
     font-size: 0.9em;
     color: #666;
   }
+  @media only screen and (max-width: 1280px) {
+    padding: 25px;
+  }
+  @media only screen and (max-width: 900px) {
+    width: 50%;
+    padding: 30px;
+  }
+  @media only screen and (max-width: 768px) {
+    padding: 20px;
+  }
+  @media only screen and (max-width: 480px) {
+    float: none;
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 10px;
+  }
 }
 
 
 .product-details {
+  &__btn-golist {
+    margin-bottom: 20px;
+  }
   &__page {
     margin-top: 30px;
+    clear: both;
     &:after {
       display: block;
       clear: both;
@@ -177,16 +205,35 @@ legend, .a11y-hidden {
   }
   &__info {
     display: flex;
+    @media only screen and (max-width: 900px) {
+      display: block;
+    }
   }
   &__img {
     width: 380px;
     height: 380px;
     margin: 0 50px 100px 0;
+    @media only screen and (max-width: 400px) {
+      max-width: 100%;
+      height: auto;
+      margin: 0 0 30px 0;
+    }
   }
   &__box{
     width: calc(100% - 430px);
+    padding: 10px 300px 10px 50px;
+
+    @media only screen and (max-width: 1280px) {
+      padding-right: 50px;
+    }
+
+    @media only screen and (max-width: 900px) {
+      width: auto;
+      padding: 10px;
+    }
   }
   &__list {
+    margin-top: 20px;
     dt {
       font-weight: bold;
     }
@@ -211,6 +258,9 @@ legend, .a11y-hidden {
       display: block;
       background-color: #eee;
     }
+    &__quantity {
+      font-size: 0;
+    }
   }
   &__quantity-total {
     width: 40px;
@@ -222,14 +272,20 @@ legend, .a11y-hidden {
     margin-top: 50px;
   }
   &__total {
-    margin-top: 10px;
+    margin-top: 30px;
+    text-align: right;
     &-num {
       color: #209cee;
       font-weight: bold;
+      font-size: 1.2em;
+      padding: 0 3px;
     }
   }
-  &__btn-list {
-    margin-bottom: 20px;
+  &__btnset {
+    text-align: right;
+  }
+  &__btn-buy {
+    margin-right: 5px;
   }
 }
 
@@ -291,6 +347,7 @@ legend, .a11y-hidden {
     &__price-num {
       color: #ff3860;
       font-weight: bold;
+      font-size: 1.2em;
     }
     &__order {
       margin-left: 30px;
@@ -298,20 +355,16 @@ legend, .a11y-hidden {
   }
 }
 
-
-
-
-
 .order {
   &__list {
-    margin:30px 0;
+    margin:30px 0 50px;
     padding: 30px; 
     background-color: #f2f2f2;
   }
   &__item {
     display: flex;
     border-top:1px solid #bbb;
-    padding: 20px;
+    padding: 10px 20px;
     background-color: #fff;
     &:last-child {
       border-bottom:1px solid #bbb;      
@@ -324,6 +377,9 @@ legend, .a11y-hidden {
     &__main-info {
       width: 240px;
       margin-right:10px;
+      p {
+        margin-bottom: 5px !important;
+      }
     }
     &__info {
       width: 200px;
@@ -339,12 +395,10 @@ legend, .a11y-hidden {
   }
 
   &__pay{
-    h3 {
-      font-size: 1.2em;
-    }  
     &__price-num {
       color: #ff3860;
       font-weight: bold;
+      font-size: 1.2em;
     }
     &__btn {
         margin-left: 20px;
@@ -352,9 +406,15 @@ legend, .a11y-hidden {
   }
 
   &__ship__box {
-    margin: 30px 0;
+    margin: 30px 0 50px;
     padding: 10px;
     background-color: #f2f2f2;
+    div {
+      margin-bottom: 10px;
+      :last-child {
+        margin-bottom: 0;
+      }
+    }
     .input {
       margin: 2px 0;
     }
@@ -368,13 +428,30 @@ legend, .a11y-hidden {
   }
 }
 
-
 .order-history{
   &__nolist__explain {
     padding: 50px 0;
     text-align: center;
   }
+  &__list {
+    margin:30px 0 50px;
+    padding: 30px; 
+    background-color: #f2f2f2;
+  }
+  &__item {
+    p {
+      margin-bottom: 5px !important;
+    }
+    border-top:1px solid #bbb;
+    padding: 10px 20px;
+    background-color: #fff;
+    &:last-child {
+      border-bottom:1px solid #bbb;      
+    }
+  }
 }
+
+
 
 
 

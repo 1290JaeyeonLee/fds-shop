@@ -94,7 +94,7 @@
     
   <template id="product-details">
     <h2 class="a11y-hidden">상품 상세 페이지</h2>
-    <button class="product-details__btn-list button is-info">목록으로</button>
+    <button class="product-details__btn-golist button is-info">목록으로</button>
     <div class="product-details__page">
       <div class="product-details__info">      
         <img class="product-details__img" src="#" alt="">
@@ -112,9 +112,11 @@
           </dl>
           <article class="product-details__layer"></article>
           <p class="product-details__total">총 결제 금액 <span class="product-details__total-num">0</span>원</p>
-          <button class="product-details__btn-buy button is-danger is-outlined">바로구매</button>
-          <button class="product-details__btn-cart button is-info is-outlined">장바구니</button>
-        </section>
+          <div class="product-details__btnset">
+            <button class="product-details__btn-buy button is-danger is-outlined">바로구매</button>
+            <button class="product-details__btn-cart button is-info is-outlined">장바구니</button>
+          </div>
+          </section>
       </div>
       <p class="product-details__content"></p>
     </div>    
@@ -217,9 +219,18 @@
 
   <template id="order-ship">
     <article class="order__ship__box">
-      <input name="name" type="text" class="order__ship__name input" placeholder="성명"> 
-      <input name="address" type="text" class="order__ship__address input" placeholder="주소"> 
-      <input name="phone" type="text" class="order__ship__phone input" placeholder="전화번호"> 
+      <div>
+        <label for="order__ship__name">성명</label>
+        <input name="name" type="text" id="order__ship__name" class="input">
+      </div>
+      <div>
+        <label for="order__ship__address">주소</label> 
+        <input name="address" type="text" id="order__ship__address" class="input"> 
+      </div>
+      <div>
+        <label for="order__ship__phone">전화번호</label>       
+        <input name="phone" type="text" id="order__ship__phone" class="input"> 
+      </div>
     </article>
   </template>
 
@@ -227,25 +238,23 @@
     <h2>주문내역 조회</h2>
     <section class="order-history__list"></section>
   </template>
-
+  
+  <template id="order-history__nolist">
+    <p class="order-history__nolist__explain">주문한 내역이 없습니다.</p>
+  </template>
   <template id="order-history__list">
     <article class="order-history__item">
-      <img src="#" alt="" class="order-history__item__img">
-      <div class="order-history__item__info">
-        주문일자:<span class="order-history__item__date"></span>
-      </div>
-      <div class="order-history__item__info">
-        주문상품:<span class="order-history__item__title"></span>
-      </div>
-      <div class="order-history__item__info">
-        총 구매금액:<span class="order-history__item__price"></span>
-      </div>
+      <p>주문번호 : <span class="order-history__number"></span></p>
+      <p>주문일자 : <span class="order-history__date"></span></p>
+      <div class="order-history__products"></div>
+      <p>총 구매금액 : <span class="order-history__total"></span></p>
     </article>
   </template>
-  <template id="order-history__nolist">
-    <p class="order-history__nolist__explain">
-      주문한 내역이 없습니다.
-      </p>
+  <template id="order-product">
+      <p>상품명 : <span class="order-history__name"></span></p>
+      <p>사이즈 : <span class="order-history__size"></span></p>
+      <p>수량 : <span class="order-history__quantity"></span></p>
+      <p>가격 : <span class="order-history__price"></span></p>
   </template>
   <script src="./index.js"></script>
 </body>
